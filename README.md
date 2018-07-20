@@ -12,8 +12,8 @@ npm install vue-fixed-block --save
 example app
 
 ```js
-import UIBox from 'vue-fixed-block'
-Vue.use(UIBox)
+import FixedBlock from 'vue-fixed-block'
+Vue.use(FixedBlock)
 ```
 
 ## screenshot
