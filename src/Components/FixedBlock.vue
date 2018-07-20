@@ -6,9 +6,16 @@
 
 <script>
   import Vue from 'vue'
+
   export default {
     name: 'fixedBlock',
-    props: {},
+    props: {
+      fixDelay: {
+        type: Number,
+        required: false,
+        default: 2
+      }
+    },
     data () {
       return {
         fixed: false,
@@ -37,8 +44,8 @@
       },
       initScrollHandler: function () {
         // console.log('fixed-block initScrollHandler ... wh=',window.innerHeight, ', element_height=', this.element_height)
-        let w_height = isNaN(window.innerHeight) ? window.clientHeight : window.innerHeight;
-        if(w_height > this.element_height - 40 && this.isVisible()){
+        let wHeight = isNaN(window.innerHeight) ? window.clientHeight : window.innerHeight;
+        if (wHeight > this.element_height - 40 && this.isVisible()){
           // console.log('fixed-block initScrollHandler ... addEventListener scroll')
           window.addEventListener('scroll', this.scrollHandler, {
             passive: true
@@ -57,9 +64,9 @@
         this.parent_width = this.parent.clientWidth
         this.parent_height = this.parent.clientHeight
 
-        let parent_computedStyle = getComputedStyle(this.parent);
-        this.parent_width -= parseFloat(parent_computedStyle.paddingLeft) + parseFloat(parent_computedStyle.paddingRight);
-        this.parent_height -= parseFloat(parent_computedStyle.paddingTop) + parseFloat(parent_computedStyle.paddingBottom);
+        let parenComputedStyle = getComputedStyle(this.parent);
+        this.parent_width -= parseFloat(parenComputedStyle.paddingLeft) + parseFloat(parenComputedStyle.paddingRight)
+        this.parent_height -= parseFloat(parenComputedStyle.paddingTop) + parseFloat(parenComputedStyle.paddingBottom)
 
         this.$el.style.width = this.parent_width + 'px'
 
@@ -68,43 +75,44 @@
       },
       scrollHandler: function ($event) {
 
-        //let w_height = isNaN(window.innerHeight) ? window.clientHeight : window.innerHeight;
-        let parentBounding = this.parent.getBoundingClientRect()
-        //console.log('fixed-block ', bounding)
+        // let w_height = isNaN(window.innerHeight) ? window.clientHeight : window.innerHeight;
 
-        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        let f = this.parent_height + parentBounding.top;
+        let parentBounding = this.parent.getBoundingClientRect()
+        // console.log('fixed-block ', bounding)
+
+        // let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        let f = this.parent_height + parentBounding.top
 
         // console.log('fixed-block scrollHandler ... f=', f)
         // console.log('fixed-block scrollHandler ... ph=', this.parent_height, ', eH=', this.element_height, ', pTop=', parentBounding.top, ', scrollTop=', scrollTop, parentBounding)
 
-        this.fixed = parentBounding.top < -2
+        this.fixed = parentBounding.top < -this.fixDelay
         // console.log('fixed-block fixed=', this.fixed)
 
-        if(f < this.element_height) {
+        if (f < this.element_height) {
           this.$el.style.top = (f - this.element_height) + 'px'
         } else {
-          this.$el.style.top = '0';
+          this.$el.style.top = '0'
         }
-
       }
     },
     mounted: function () {
-      // console.log('fixed-block mounted')
-
       this.parent = this.$el.parentElement
-      // this.resizeHandler()
-
       window.addEventListener('resize', this.resizeHandler, {
         passive: true
       })
-
+      this.resizeHandler()
     },
     updated: function () {
       // console.log('fixed-block updated', this.isVisible())
       Vue.nextTick(() => {
         this.resizeHandler()
       })
+    },
+    watch: {
+      fixed: function ($fixed) {
+        this.$emit('changeFix', $fixed)
+      }
     }
   }
 </script>

@@ -1,6 +1,6 @@
 {
   "name": "vue-fixed-block",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "vue fixed block",
   "author": "Domatskiy",
   "private": false,
@@ -22,10 +22,10 @@
     "scroll"
   ],
   "license": "MIT",
-  "dependencies": {},
-  "peerDependencies": {
-    "vue": "^2.3"
+  "dependencies": {
+    "vue": "^2.5.16"
   },
+  "peerDependencies": {},
   "devDependencies": {
     "autoprefixer": "^7.1.2",
     "babel-core": "^6.22.1",

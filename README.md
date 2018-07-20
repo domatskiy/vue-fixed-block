@@ -24,9 +24,9 @@ Vue.use(FixedBlock)
 ### fixed-block properties
 | Name   | Type  | Required | Default | Description |
 | ------ |:-----:| :---------:| --------|:---------|
-
+| fix-delay | Number | false | 2 | |
 
 ### ui-box events
 | Name   | params | Description |
 | ------ |:-----:|:---------|
-
+| change-fix | fixed |  |
