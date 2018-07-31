@@ -1,11 +1,13 @@
 ## install
 
-npm install vue-fixed-block --save
+npm i vue-fixed-block --save-dev
 
 ## use
 
 ```html
-<fixed-block>
+<fixed-block
+  @changeFix="changeFix"
+  :fix-delay="100">
   content
 </fixed-block>
 ```
@@ -21,12 +23,32 @@ Vue.use(FixedBlock)
 
 
 
-### fixed-block properties
+#### fixed-block properties
 | Name   | Type  | Required | Default | Description |
 | ------ |:-----:| :---------:| --------|:---------|
-| fix-delay | Number | false | 2 | |
+| fix-delay | Number | false | 2 | the offset of the scroll actuation attachment |
 
-### ui-box events
-| Name   | params | Description |
-| ------ |:-----:|:---------|
-| change-fix | fixed |  |
+#### fixed-block events
+| Name   | params | Type | Description |
+| ------ |:-----:|:-----:|:---------|
+| change-fix | fixed | Boolean | called when the block is attached or detached  |
+
+## Event Bus
+
+#### events
+| Name   | params | Type | Description |
+| ------ |:-----:|:-----:|:---------|
+| change-fix | fixed | Boolean | called when the block is attached or detached |
+
+**example events**
+```js
+import {Event} from 'vue-fixed-block'
+Event.$on('change-fix', function (fixed) {
+  // check 'fixed' param
+})
+```
+
+##### Call up position recalculation
+```js
+Event.$emit('recalc')
+```

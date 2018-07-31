@@ -6,6 +6,7 @@
 
 <script>
   import Vue from 'vue'
+  import Event from './../Event'
 
   export default {
     name: 'fixedBlock',
@@ -45,19 +46,17 @@
       initScrollHandler: function () {
         // console.log('fixed-block initScrollHandler ... wh=',window.innerHeight, ', element_height=', this.element_height)
         let wHeight = isNaN(window.innerHeight) ? window.clientHeight : window.innerHeight;
-        if (wHeight > this.element_height - 40 && this.isVisible()){
+        if (wHeight > this.element_height - 40 && this.isVisible()) {
           // console.log('fixed-block initScrollHandler ... addEventListener scroll')
           window.addEventListener('scroll', this.scrollHandler, {
             passive: true
           })
         } else {
-          // console.log('fixed-block initScrollHandler ... removeEventListener scroll')
           window.removeEventListener('scroll', this.scrollHandler)
           this.fixed = false
         }
       },
       resizeHandler: function ($event) {
-        // console.log('fixed-block resizeHandler ...')
         this.element_height = this.$el.offsetHeight
         this.element_top = this.$el.offsetTop
 
@@ -74,20 +73,9 @@
         this.initScrollHandler()
       },
       scrollHandler: function ($event) {
-
-        // let w_height = isNaN(window.innerHeight) ? window.clientHeight : window.innerHeight;
-
         let parentBounding = this.parent.getBoundingClientRect()
-        // console.log('fixed-block ', bounding)
-
-        // let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         let f = this.parent_height + parentBounding.top
-
-        // console.log('fixed-block scrollHandler ... f=', f)
-        // console.log('fixed-block scrollHandler ... ph=', this.parent_height, ', eH=', this.element_height, ', pTop=', parentBounding.top, ', scrollTop=', scrollTop, parentBounding)
-
         this.fixed = parentBounding.top < -this.fixDelay
-        // console.log('fixed-block fixed=', this.fixed)
 
         if (f < this.element_height) {
           this.$el.style.top = (f - this.element_height) + 'px'
@@ -102,6 +90,11 @@
         passive: true
       })
       this.resizeHandler()
+      Event.$on('recalc', () => {
+        console.log('recalc')
+        this.resizeHandler()
+        this.scrollHandler()
+      })
     },
     updated: function () {
       // console.log('fixed-block updated', this.isVisible())
@@ -112,6 +105,7 @@
     watch: {
       fixed: function ($fixed) {
         this.$emit('changeFix', $fixed)
+        Event.$emit('change-fix', $fixed)
       }
     }
   }

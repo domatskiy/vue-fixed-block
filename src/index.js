@@ -1,14 +1,18 @@
-import FixedBlock from './Components/FixedBlock.vue'
+import FixedBlockComponent from './Components/FixedBlock.vue'
+import Event from './Event'
 
-const FixedBlockPlugin = {
+const FixedBlock = {
   install (Vue, options = {}) {
-    console.log('install ', FixedBlock.name)
-    Vue.component(FixedBlock.name, FixedBlock)
+    Vue.component(FixedBlockComponent.name, FixedBlockComponent)
   }
 }
 
 if (typeof window !== 'undefined' && window.Vue) {
-  window.Vue.use(FixedBlockPlugin)
+  window.Vue.use(FixedBlock)
 }
 
-export default FixedBlockPlugin
+export {
+  Event
+}
+
+export default FixedBlock

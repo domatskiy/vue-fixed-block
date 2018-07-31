@@ -1,6 +1,7 @@
 <template>
     <div id="app">
         <div class="parent">
+            <button @click="callRecalc">callRecalc</button>
             <fixed-block
                 @changeFix="changeFix"
                 :fix-delay="100">
@@ -11,12 +12,16 @@
 </template>
 
 <script>
+    import {Event} from 'plugin'
     export default {
       name: 'app',
       components: {},
       methods: {
         changeFix: function (fixed) {
           console.info('is fixed:', fixed)
+        },
+        callRecalc: function () {
+          Event.$emit('recalc')
         }
       },
       data () {
