@@ -44,10 +44,8 @@
         return this.$el.offsetHeight !== null
       },
       initScrollHandler: function () {
-        // console.log('fixed-block initScrollHandler ... wh=',window.innerHeight, ', element_height=', this.element_height)
         let wHeight = isNaN(window.innerHeight) ? window.clientHeight : window.innerHeight;
         if (wHeight > this.element_height - 40 && this.isVisible()) {
-          // console.log('fixed-block initScrollHandler ... addEventListener scroll')
           window.addEventListener('scroll', this.scrollHandler, {
             passive: true
           })
@@ -68,8 +66,6 @@
         this.parent_height -= parseFloat(parenComputedStyle.paddingTop) + parseFloat(parenComputedStyle.paddingBottom)
 
         this.$el.style.width = this.parent_width + 'px'
-
-        // console.log('fixed-block resizeHandler, pWidth=', this.parent_width, ', pHeight=', this.parent_height, ', eTop=',this.element_top, ', eHeight=',this.element_height)
         this.initScrollHandler()
       },
       scrollHandler: function ($event) {
@@ -91,13 +87,11 @@
       })
       this.resizeHandler()
       Event.$on('recalc', () => {
-        console.log('recalc')
         this.resizeHandler()
         this.scrollHandler()
       })
     },
     updated: function () {
-      // console.log('fixed-block updated', this.isVisible())
       Vue.nextTick(() => {
         this.resizeHandler()
       })
