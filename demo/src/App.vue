@@ -1,10 +1,11 @@
 <template>
     <div id="app">
+        <button @click="callRecalc">callRecalc</button>
         <div class="parent">
-            <button @click="callRecalc">callRecalc</button>
             <fixed-block
                 @changeFix="changeFix"
-                :fix-delay="100">
+                :disabled="false"
+                :fix-delay="20">
                 <div class="fixed"> content d</div>
             </fixed-block>
         </div>
@@ -33,7 +34,7 @@
 <style lang="less" scoped>
     .parent{
         display: inline-block;
-        height: 200vh; width: 200px;
+        height: 150vh; width: 200px;
         margin: 20vh 100px 70vh;
         background-color: aliceblue;
 

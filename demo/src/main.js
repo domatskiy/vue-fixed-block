@@ -10,7 +10,7 @@ new Vue({
   el: '#app',
   mounted: function () {
     Event.$on('change-fix', ($fixed) => {
-      console.log('change-fix', $fixed)
+      console.log('Event change-fix', $fixed)
     })
   },
   render: h => h(App)

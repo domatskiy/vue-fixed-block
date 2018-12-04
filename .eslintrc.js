@@ -21,23 +21,23 @@ module.exports = {
 
   // add your custom rules here
   'rules': {
-      //"no-else-return": "error",
-      //"no-multi-spaces": "error",
-      //"no-whitespace-before-property": "error",
-      //"camelcase": "error",
-      //"new-cap": "error",
-      //"no-console": "error",
-      //"comma-dangle": "error",
-      //"no-var": "error",
-      //"indent": ["error", 2, {"SwitchCase": 1}],
-      //"quotes": [
-      //    "error",
-      //    "single"
-      //],
-      //"semi": [
-      //    "error",
-      //    "always"
-      //],
+    //"no-else-return": "error",
+    //"no-multi-spaces": "error",
+    //"no-whitespace-before-property": "error",
+    //"camelcase": "error",
+    //"new-cap": "error",
+    //"no-console": "error",
+    //"comma-dangle": "error",
+    //"no-var": "error",
+    //"indent": ["error", 2, {"SwitchCase": 1}],
+    //"quotes": [
+    //    "error",
+    //    "single"
+    //],
+    //"semi": [
+    //    "error",
+    //    "always"
+    //],
     // allow paren-less arrow functions
     'arrow-parens': 0,
     // allow async-await

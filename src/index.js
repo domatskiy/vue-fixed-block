@@ -7,9 +7,9 @@ const FixedBlock = {
   }
 }
 
-if (typeof window !== 'undefined' && window.Vue) {
-  window.Vue.use(FixedBlock)
-}
+// if (typeof window !== 'undefined' && window.Vue) {
+//  window.Vue.use(FixedBlock)
+// }
 
 export {
   Event
