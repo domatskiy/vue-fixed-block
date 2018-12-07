@@ -44,22 +44,25 @@
         if (!this.disabled && this.fixed) {
           cl.push('fixed-block--fixed')
         }
-
+        // console.log('computed blockClass', cl)
         return cl.join(' ')
       }
     },
     methods: {
       isVisible: function () {
+        // console.log('isVisible', this.$el.offsetHeight !== null)
         return this.$el.offsetHeight !== null
       },
       initScrollHandler: function () {
         let wHeight = isNaN(window.innerHeight) ? window.clientHeight : window.innerHeight
         // console.log('initScrollHandler', wHeight, this.parent_height, this.element_height + 40, this.isVisible())
         if (!this.disabled && wHeight > this.element_height + 40 && this.parent_height > this.element_height + 40 && this.isVisible()) {
+          // console.log('add scroll handler')
           window.addEventListener('scroll', this.scrollHandler, {
             passive: true
           })
         } else {
+          // console.log('remove scroll handler')
           window.removeEventListener('scroll', this.scrollHandler, false)
           if (this.fixed === true) {
             this.$set(this, 'fixed', false)
@@ -67,10 +70,12 @@
         }
       },
       resizeHandler: function ($event) {
+        // console.log('resizeHandler')
         this.calc()
         this.initScrollHandler()
       },
       calc: function () {
+        // console.log('calc')
         this.element_height = this.$el.offsetHeight
         this.element_top = this.$el.offsetTop
 
@@ -85,15 +90,22 @@
       },
       scrollHandler: function ($event) {
         let parentBounding = this.parent.getBoundingClientRect()
-        let f = this.parent_height + parentBounding.top
-        let fixed = !this.disabled && parentBounding.top < -this.fixDelay
+        let fixed = !this.disabled && (parentBounding.top < -this.fixDelay)
         if (this.fixed !== fixed) {
           this.$set(this, 'fixed', fixed)
         }
-        if (f < this.element_height) {
-          this.$el.style.top = (f - this.element_height) + 'px'
+
+        if (fixed) {
+          // остаток места
+          let f = this.parent_height + parentBounding.top
+          // console.log('scrollHandler, fixed=', fixed, 'f=', f, this.element_height, parentBounding.top)
+          if (f > this.element_height) {
+            this.$el.style.top = 0
+          } else {
+            this.$el.style.top = (f - this.element_height) + 'px'
+          }
         } else {
-          this.$el.style.top = '0'
+          this.$el.style.top = 'auto'
         }
       }
     },
@@ -104,23 +116,27 @@
       })
       this.resizeHandler()
       Event.$on('recalc', () => {
+        // console.log('on recalc')
         this.calc()
         this.scrollHandler()
       })
     },
     updated: function () {
-      Vue.nextTick(() => {
+      // console.log('updated el')
+      /* Vue.nextTick(() => {
         this.calc()
         this.scrollHandler()
-      })
+      }) */
     },
     watch: {
       disabled: function ($disabled) {
+        // console.log('disabled changed')
         this.fixed = false
         this.calc()
         this.scrollHandler()
       },
       fixed: function ($fixed) {
+        // console.log('fixed changed')
         this.$emit('changeFix', $fixed)
         Event.$emit('change-fix', $fixed)
       }
