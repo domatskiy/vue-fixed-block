@@ -1,6 +1,6 @@
 {
   "name": "vue-fixed-block",
-  "version": "0.5.1",
+  "version": "1.0.0",
   "description": "vue fixed block",
   "author": "Domatskiy",
   "private": false,
@@ -22,7 +22,8 @@
     "scroll"
   ],
   "dependencies": {
-    "vue": "^2.3"
+    "vue": "^2.3",
+    "vue-resize": "^0.4.5"
   },
   "devDependencies": {
     "autoprefixer": "9.3.1",
