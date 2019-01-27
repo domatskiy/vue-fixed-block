@@ -112,7 +112,8 @@ return /******/ (function(modules) { // webpackBootstrap
       parent_width: null,
       parent_height: null,
       element_height: null,
-      element_top: 0
+      element_top: 0,
+      scrollHandlerAdded: false
     };
   },
 
@@ -131,24 +132,11 @@ return /******/ (function(modules) { // webpackBootstrap
     isVisible: function isVisible() {
       return this.$el.offsetHeight !== null;
     },
-    initScrollHandler: function initScrollHandler() {
-      var wHeight = isNaN(window.innerHeight) ? window.clientHeight : window.innerHeight;
-
-      if (!this.disabled && wHeight > this.element_height + 40 && this.parent_height > this.element_height + 40 && this.isVisible()) {
-        window.addEventListener('scroll', this.scrollHandler, {
-          passive: true
-        });
-      } else {
-        window.removeEventListener('scroll', this.scrollHandler, false);
-        if (this.fixed === true) {
-          this.$set(this, 'fixed', false);
-        }
-      }
-    },
+    initScrollHandler: function initScrollHandler() {},
     resizeHandler: function resizeHandler($event) {
       this.calc();
-      this.initScrollHandler();
     },
+
     calc: function calc() {
       this.element_height = this.$el.offsetHeight;
       this.element_top = this.$el.offsetTop;
@@ -160,23 +148,22 @@ return /******/ (function(modules) { // webpackBootstrap
       this.parent_width -= parseFloat(parenComputedStyle.paddingLeft) + parseFloat(parenComputedStyle.paddingRight);
       this.parent_height -= parseFloat(parenComputedStyle.paddingTop) + parseFloat(parenComputedStyle.paddingBottom);
 
+
       this.$el.style.width = this.parent_width + 'px';
     },
     scrollHandler: function scrollHandler($event) {
       var parentBounding = this.parent.getBoundingClientRect();
-      var fixed = !this.disabled && parentBounding.top < -this.fixDelay;
+      var wHeight = isNaN(window.innerHeight) ? window.clientHeight : window.innerHeight;
+      var fixed = !this.disabled && wHeight > this.element_height && parentBounding.top < -this.fixDelay && this.parent_height > this.element_height + 1;
+
       if (this.fixed !== fixed) {
         this.$set(this, 'fixed', fixed);
       }
 
       if (fixed) {
-        var f = this.parent_height + parentBounding.top;
+        var f = this.parent_height + parentBounding.top - 2;
 
-        if (f > this.element_height) {
-          this.$el.style.top = 0;
-        } else {
-          this.$el.style.top = f - this.element_height + 'px';
-        }
+        this.$el.style.top = '-' + (f >= this.element_height ? 0 : this.element_height - f) + 'px';
       } else {
         this.$el.style.top = 'auto';
       }
@@ -186,23 +173,43 @@ return /******/ (function(modules) { // webpackBootstrap
     var _this = this;
 
     this.parent = this.$el.parentElement;
-    window.addEventListener('resize', this.resizeHandler, {
-      passive: true
-    });
     this.resizeHandler();
+    this.scrollHandler();
+
+    this.$nextTick(function () {
+      window.addEventListener('resize', _this.resizeHandler, {
+        passive: true
+      });
+      window.addEventListener('scroll', _this.scrollHandler, {
+        passive: true
+      });
+    });
+
     __WEBPACK_IMPORTED_MODULE_1__Event__["a" /* default */].$on('recalc', function () {
       _this.calc();
       _this.scrollHandler();
     });
   },
-  updated: function updated() {},
+  destroyed: function destroyed() {
+    window.removeEventListener('scroll', this.scrollHandler, false);
+  },
+  updated: function updated() {
+    var _this2 = this;
+
+    setTimeout(function () {
+      _this2.calc();
+      _this2.scrollHandler();
+    }, 500);
+  },
   watch: {
     disabled: function disabled($disabled) {
+      console.log('fixed-block disabled changed');
       this.fixed = false;
       this.calc();
       this.scrollHandler();
     },
     fixed: function fixed($fixed) {
+      console.log('fixed-block fixed changed');
       this.$emit('changeFix', $fixed);
       __WEBPACK_IMPORTED_MODULE_1__Event__["a" /* default */].$emit('change-fix', $fixed);
     }
@@ -258,7 +265,7 @@ var FixedBlock = {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FixedBlock_vue__ = __webpack_require__(0);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_193c896d_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_FixedBlock_vue__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9cc2f460_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_FixedBlock_vue__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__ = __webpack_require__(11);
 function injectStyle (context) {
   __webpack_require__(5)
@@ -279,8 +286,8 @@ var __vue_module_identifier__ = null
 
 var Component = Object(__WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__["a" /* default */])(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FixedBlock_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_193c896d_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_FixedBlock_vue__["a" /* render */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_193c896d_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_FixedBlock_vue__["b" /* staticRenderFns */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9cc2f460_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_FixedBlock_vue__["a" /* render */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9cc2f460_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_FixedBlock_vue__["b" /* staticRenderFns */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
